@@ -1,8 +1,7 @@
 package taesu.io.user.application
 
-import taesu.io.user.domain.User
 import taesu.io.user.domain.UserRepository
-import taesu.io.user.routes.UserRetrieveResponse
+import taesu.io.user.dtos.UserRetrieveResponse
 
 /**
  * Created by taesu on 2024/01/14.

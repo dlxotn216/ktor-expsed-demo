@@ -3,7 +3,6 @@ package taesu.io.user.routes
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 import taesu.io.plugins.long
 import taesu.io.user.application.UserRetrieveService
@@ -25,10 +24,3 @@ fun Application.userRouting() {
         }
     }
 }
-
-@Serializable
-data class UserRetrieveResponse(
-    val userKey: Long,
-    val name: String,
-    val email: String,
-)
