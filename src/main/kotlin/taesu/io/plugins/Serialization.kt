@@ -15,12 +15,4 @@ fun Application.configureSerialization() {
         }
         json()
     }
-    routing {
-        get("/json/jackson") {
-            call.respond(mapOf("hello" to "world"))
-        }
-        get("/json/kotlinx-serialization") {
-            call.respond(mapOf("hello" to "world"))
-        }
-    }
 }
