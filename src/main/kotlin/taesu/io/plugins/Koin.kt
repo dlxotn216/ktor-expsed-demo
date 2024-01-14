@@ -4,9 +4,7 @@ import io.ktor.server.application.*
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.SLF4JLogger
-import taesu.io.user.application.UserRetrieveService
-import taesu.io.user.domain.UserRepository
-import taesu.io.user.domain.UserRepositoryImpl
+import taesu.io.user.dependencies.userDependencyInjections
 
 /**
  * Created by taesu on 2024/01/14.
@@ -16,8 +14,7 @@ import taesu.io.user.domain.UserRepositoryImpl
  * @since ktor-exposed-demo
  */
 val dependencyInjectionModule = module {
-    single { UserRetrieveService(get()) }
-    single<UserRepository> { UserRepositoryImpl() }
+    userDependencyInjections()
 }
 
 fun Application.configureDependencyInjection() {
