@@ -1,7 +1,10 @@
 package taesu.io.user.domain
 
-import io.ktor.server.plugins.*
-import java.util.concurrent.ConcurrentHashMap
+import org.jetbrains.exposed.dao.LongEntity
+import org.jetbrains.exposed.dao.LongEntityClass
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.dao.id.LongIdTable
+import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
  * Created by taesu on 2024/01/14.
@@ -10,19 +13,28 @@ import java.util.concurrent.ConcurrentHashMap
  * @version ktor-exposed-demo
  * @since ktor-exposed-demo
  */
+
+object Users: LongIdTable("users", "user_key") {
+    val name = varchar("name", 255)
+    val email = varchar("email", 255)
+}
+
 class User(
-    val userKey: Long,
-    val name: String,
-    val email: String,
-)
+    id: EntityID<Long>
+): LongEntity(id) {
+    val userKey get() = id.value
+    val name by Users.name
+    val email by Users.email
+
+    companion object: LongEntityClass<User>(Users) {
+
+    }
+}
 
 interface UserRepository {
     fun findOrThrow(userKey: Long): User
 }
 
 class UserRepositoryImpl: UserRepository {
-    private val repository: ConcurrentHashMap<Long, User> = ConcurrentHashMap<Long, User>().apply {
-        put(1L, User(1L, "taesu", "taesulee93@gmail.com"))
-    }
-    override fun findOrThrow(userKey: Long): User = repository[userKey] ?: throw NotFoundException("")
+    override fun findOrThrow(userKey: Long): User = transaction { User[userKey] }
 }
