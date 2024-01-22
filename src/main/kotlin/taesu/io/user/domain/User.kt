@@ -32,7 +32,7 @@ class User(
 }
 
 interface UserRepository {
-    fun findOrThrow(userKey: Long): User
+    suspend fun findOrThrow(userKey: Long): User
 }
 
 class UserRepositoryImpl: UserRepository {

@@ -13,7 +13,7 @@ import taesu.io.user.dtos.UserRetrieveResponse
 class UserRetrieveService(
     private val userRepository: UserRepository
 ) {
-    fun retrieve(userKey: Long): UserRetrieveResponse {
+    suspend fun retrieve(userKey: Long): UserRetrieveResponse {
         return userRepository.findOrThrow(userKey).let {
             UserRetrieveResponse(it.userKey, it.name, it.email)
         }
