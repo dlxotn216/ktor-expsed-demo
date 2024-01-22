@@ -23,8 +23,8 @@ class User(
     id: EntityID<Long>
 ): LongEntity(id) {
     val userKey get() = id.value
-    val name by Users.name
-    val email by Users.email
+    var name by Users.name
+    var email by Users.email
 
     companion object: LongEntityClass<User>(Users) {
 
@@ -33,8 +33,15 @@ class User(
 
 interface UserRepository {
     suspend fun findOrThrow(userKey: Long): User
+    suspend fun save(command: UserSaveCommand): User
 }
 
 class UserRepositoryImpl: UserRepository {
-    override fun findOrThrow(userKey: Long): User = transaction { User[userKey] }
+    override suspend fun findOrThrow(userKey: Long): User = transaction { User[userKey] }
+    override suspend fun save(command: UserSaveCommand): User = transaction {
+        User.new(command.userKey) {
+            this.name = command.name
+            this.email = command.email
+        }
+    }
 }
